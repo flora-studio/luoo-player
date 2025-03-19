@@ -93,12 +93,12 @@ pub fn run() {
 
             let win_normal_submenu = MenuItemBuilder::new("普通模式")
                 .id("normal")
-                .accelerator("CmdOrCtrl+N")
+//                 .accelerator("CmdOrCtrl+N")
                 .build(app)?;
 
             let win_mini_submenu = MenuItemBuilder::new("迷你模式")
                 .id("mini")
-                .accelerator("CmdOrCtrl+M")
+//                 .accelerator("CmdOrCtrl+M")
                 .build(app)?;
 
             let menu = MenuBuilder::new(app)
@@ -158,9 +158,7 @@ pub fn run() {
                             let _ = window.set_focus();
                         }
                     }
-                    _ => {
-                        println!("unhandled event {event:?}");
-                    }
+                    _ => (),
                 })
                 .build(app)?;
 
@@ -211,14 +209,19 @@ fn go_mini(window: WebviewWindow) {
 // 窗口样式切换
 async fn toggle_window_size(window: WebviewWindow, mini: bool, new_size: PhysicalSize<u32>) {
     if mini {
-        window.set_size(LogicalSize::new(400.0, 80.0)).unwrap();
         window.set_always_on_top(true).unwrap();
         window.set_decorations(false).unwrap();
+        window.set_resizable(false).unwrap();
+        window.hide_menu().unwrap();
+        // 要放在 set_decorations 和 hide_menu 之后，否则 windows 会留下一块空白区域
+        window.set_size(LogicalSize::new(400.0, 80.0)).unwrap();
         window.eval("window.setMiniMode(true)").unwrap();
     } else {
-        window.set_size(new_size).unwrap();
         window.set_always_on_top(false).unwrap();
         window.set_decorations(true).unwrap();
+        window.set_resizable(true).unwrap();
+        window.show_menu().unwrap();
+        window.set_size(new_size).unwrap();
         window.eval("window.setMiniMode(false)").unwrap();
     }
 }

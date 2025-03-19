@@ -65,16 +65,21 @@
   }
 
   function setDraggable(domElem) {
-    domElem.dataset.tauriDragRegion = ''
-    for (const child of domElem.children) {
-      setDraggable(child)
+    // windows 上在可点击元素上设置会导致点击事件失效
+    if (domElem.tagName === 'DIV' || domElem.tagName === 'P') {
+      domElem.dataset.tauriDragRegion = ''
+      for (const child of domElem.children) {
+        setDraggable(child)
+      }
     }
   }
 
   function cancelDraggable(domElem) {
-    delete domElem.dataset.tauriDragRegion
-    for (const child of domElem.children) {
-      cancelDraggable(child)
+    if (domElem.tagName === 'DIV' || domElem.tagName === 'P') {
+      delete domElem.dataset.tauriDragRegion
+      for (const child of domElem.children) {
+        cancelDraggable(child)
+      }
     }
   }
 
@@ -111,7 +116,7 @@
     const elem = document.createElement('div')
     elem.id = 'custom-progress-bar'
     elem.style.cssText = `
-      --bg: ${localStorage.getItem('progress-bar-color') ?? ''};
+      --bg: ${localStorage.getItem('progress-bar-color') ?? '#00ff00'};
       position: absolute;
       left: 0;
       bottom: 0;
