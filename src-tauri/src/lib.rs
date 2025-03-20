@@ -26,22 +26,16 @@ pub fn run() {
       Ok(())
     })
     .invoke_handler(tauri::generate_handler![click_go_normal])
-    .build(tauri::generate_context!())
-    .expect("error while running tauri application")
     // 区分最小化到托盘与真正退出
     // https://github.com/tauri-apps/tauri/discussions/2684#discussioncomment-9434532
     // https://www.w3cschool.cn/tauri/tauri-prevents-application-shutdown.html
-    .run(|_app_handle, event| match event {
-      tauri::RunEvent::ExitRequested { code, api, .. } =>
-      match code {
-        Some(c) => {
-          println!("Exit Request with code: {}", c);
+    .on_window_event(|window, event| match event {
+        tauri::WindowEvent::CloseRequested { api, .. } => {
+            window.hide().unwrap();
+            api.prevent_close();
         }
-        _ => {
-          println!("Exit Request with code: {:?} - prevented exit", code);
-          api.prevent_exit();
-        }
-      }
-      _ => (),
-    });
+        _ => {}
+    })
+    .run(tauri::generate_context!())
+    .expect("error while running tauri application");
 }

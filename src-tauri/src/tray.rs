@@ -32,11 +32,14 @@ pub fn set_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
       }
       "normal" => {
         if let Some(window) = app.get_webview_window("main") {
+          window.show().unwrap();
           window::go_normal(window);
         }
       }
       "mini" => {
         if let Some(window) = app.get_webview_window("main") {
+          // 需要先展示出来再切换，否则记录的尺寸会异常
+          window.show().unwrap();
           window::go_mini(window);
         }
       }

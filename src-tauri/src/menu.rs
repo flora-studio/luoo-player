@@ -20,12 +20,10 @@ pub fn set_menu(app: &App) -> Result<(), Box<dyn std::error::Error>> {
   // region 切换普通窗口和 mini 模式
   let win_normal_submenu = MenuItemBuilder::new("普通模式")
     .id("normal")
-    .accelerator("CmdOrCtrl+N")
     .build(app)?;
 
   let win_mini_submenu = MenuItemBuilder::new("迷你模式")
     .id("mini")
-    .accelerator("CmdOrCtrl+M")
     .build(app)?;
 
   let win_menus = SubmenuBuilder::new(app, "窗口")

@@ -69,10 +69,18 @@
   }
 
   // 浮窗拖动事件
-  const dragListener = () => {
-    const { getCurrentWindow } = window.__TAURI__.window
-    const appWindow = getCurrentWindow()
-    appWindow.startDragging()
+  const dragListener = (e) => {
+    console.log('on drag', e)
+    // 左键单击
+    if (e.buttons === 1 && e.detail !== 2) {
+      const target = e.target
+      // windows 下设置 startDragging 会导致本身的点击事件失效，因此要过滤掉原来有点击事件的区域
+      if ((target.tagName === 'DIV' || target.tagName === 'P') && !target.className.includes(' AudioPlayer_album_pic_overlay_expand')) {
+        const { getCurrentWindow } = window.__TAURI__.window
+        const appWindow = getCurrentWindow()
+        appWindow.startDragging()
+      }
+    }
   }
 
   function setDraggable(domElem) {

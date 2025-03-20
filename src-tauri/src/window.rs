@@ -52,6 +52,7 @@ async fn toggle_window_size(window: WebviewWindow, mini: bool, new_size: Physica
     window.set_resizable(true).unwrap();
     window.show_menu().unwrap();
     window.set_size(new_size).unwrap();
+    window.center().unwrap();
     window.eval("window.setMiniMode(false)").unwrap();
   }
 }
