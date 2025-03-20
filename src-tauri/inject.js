@@ -8,6 +8,8 @@
       
       .player-mini {
         height: 80px !important;
+        user-select: none;
+        -webkit-user-select: none;
       }
       
       .player-mini > div:first-child {
@@ -57,13 +59,16 @@
       playerElem.classList.add('player-mini')
       showCustomProgressBar(playerElem)
       setDraggable(playerElem)
+      setToggler(playerElem)
     } else {
       playerElem.classList.remove('player-mini')
       hideCustomProgressBar(playerElem)
       cancelDraggable(playerElem)
+      cancelToggler(playerElem)
     }
   }
 
+  // 浮窗拖动事件
   const dragListener = () => {
     const { getCurrentWindow } = window.__TAURI__.window
     const appWindow = getCurrentWindow()
@@ -80,6 +85,26 @@
     domElem.removeEventListener('mousedown', dragListener)
   }
 
+  // 点击恢复正常窗口
+  const toggleMenuListener = async (e) => {
+    e.stopPropagation()
+    const { invoke } = window.__TAURI__.core
+    await invoke("click_go_normal")
+  }
+
+  function setToggler(domElem) {
+    const coverElem = domElem.querySelector('[class*=" AudioPlayer_album_pic_overlay_expand"]')
+    if (!coverElem) return
+    coverElem.addEventListener('click', toggleMenuListener)
+  }
+
+  function cancelToggler(domElem) {
+    const coverElem = domElem.querySelector('[class*=" AudioPlayer_album_pic_overlay_expand"]')
+    if (!coverElem) return
+    coverElem.removeEventListener('click', toggleMenuListener)
+  }
+
+  // 显示自定义进度条
   let customProgressBarInterval = undefined
 
   function showCustomProgressBar(playerElem) {

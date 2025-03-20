@@ -6,8 +6,8 @@ mod tray;
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
+fn click_go_normal(webview_window: tauri::WebviewWindow) {
+  window::go_normal(webview_window);
 }
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
@@ -25,7 +25,7 @@ pub fn run() {
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![greet])
+        .invoke_handler(tauri::generate_handler![click_go_normal])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
