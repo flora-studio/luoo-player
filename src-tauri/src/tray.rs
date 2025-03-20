@@ -61,8 +61,12 @@ pub fn set_tray(app: &App) -> Result<(), Box<dyn std::error::Error>> {
       } => {
         let app = tray.app_handle();
         if let Some(window) = app.get_webview_window("main") {
-          let _ = window.show();
-          let _ = window.set_focus();
+          if window.is_visible().unwrap() {
+            window.hide().unwrap();
+          } else {
+            window.show().unwrap();
+            window.set_focus().unwrap();  
+          }
         }
       }
       _ => (),
