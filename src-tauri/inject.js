@@ -64,23 +64,20 @@
     }
   }
 
+  const dragListener = () => {
+    const { getCurrentWindow } = window.__TAURI__.window
+    const appWindow = getCurrentWindow()
+    appWindow.startDragging()
+  }
+
   function setDraggable(domElem) {
-    // windows 上在可点击元素上设置会导致点击事件失效
-    if (domElem.tagName === 'DIV' || domElem.tagName === 'P') {
-      domElem.dataset.tauriDragRegion = ''
-      for (const child of domElem.children) {
-        setDraggable(child)
-      }
-    }
+    // 用 data-tauri-drag-region 还会导致双击最大化窗口，我们不想要这个行为，因此只能手动添加 listener
+    // @see https://github.com/tauri-apps/tauri/issues/1839#issuecomment-1002857444
+    domElem.addEventListener('mousedown', dragListener)
   }
 
   function cancelDraggable(domElem) {
-    if (domElem.tagName === 'DIV' || domElem.tagName === 'P') {
-      delete domElem.dataset.tauriDragRegion
-      for (const child of domElem.children) {
-        cancelDraggable(child)
-      }
-    }
+    domElem.removeEventListener('mousedown', dragListener)
   }
 
   let customProgressBarInterval = undefined
