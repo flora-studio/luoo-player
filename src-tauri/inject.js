@@ -60,17 +60,18 @@
       showCustomProgressBar(playerElem)
       setDraggable(playerElem)
       setToggler(playerElem)
+      showColorPicker(playerElem)
     } else {
       playerElem.classList.remove('player-mini')
       hideCustomProgressBar(playerElem)
       cancelDraggable(playerElem)
       cancelToggler(playerElem)
+      hideColorPicker(playerElem)
     }
   }
 
   // 浮窗拖动事件
   const dragListener = (e) => {
-    console.log('on drag', e)
     // 左键单击
     if (e.buttons === 1 && e.detail !== 2) {
       const target = e.target
@@ -146,24 +147,77 @@
     const elem = document.createElement('div')
     elem.id = 'custom-progress-bar'
     elem.style.cssText = `
-      --bg: ${localStorage.getItem('progress-bar-color') ?? '#00ff00'};
+      --bg: ${getCookie('progress-bar-color') ?? '#181818'};
       position: absolute;
       left: 0;
       bottom: 0;
       width: var(--progress, 0);
       height: 4px;
-      background-color: var(--bg, #00ff00);
+      background-color: var(--bg, #181818);
     `
     return elem
   }
 
-  window.setProgressBarColor = () => {
-    const progressBarElem = document.querySelector('#custom-progress-bar')
-    if (!progressBarElem) return
-    const color = window.prompt('输入 CSS 色值', localStorage.getItem('progress-bar-color') ?? '')
-    if (color !== null) {
-      progressBarElem.style.setProperty('--bg', color)
-      localStorage.setItem('progress-bar-color', color)
+  function showColorPicker(playerElem) {
+    let colorPickerElem = playerElem.querySelector('#custom-color-picker')
+    if (!colorPickerElem) {
+      colorPickerElem = _createColorPicker()
+      playerElem.appendChild(colorPickerElem)
     }
+  }
+
+  function hideColorPicker(playerElem) {
+    const colorPickerElem = playerElem.querySelector('#custom-color-picker')
+    if (colorPickerElem) {
+      colorPickerElem.remove()
+    }
+  }
+
+  function _createColorPicker() {
+    const elem = document.createElement('input')
+    elem.id = 'custom-color-picker'
+    elem.type = 'color'
+    elem.value = getCookie('progress-bar-color') ?? '#181818'
+    elem.style.cssText = `
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
+    `
+    elem.addEventListener('change', event => {
+      const color = event.target.value
+      setCookie('progress-bar-color', color)
+      const progressBarElem = document.querySelector('#custom-progress-bar')
+      if (progressBarElem) {
+        progressBarElem.style.setProperty('--bg', color)
+      }
+    })
+    return elem
+  }
+
+  // https://www.w3schools.com/js/js_cookies.asp
+  function setCookie(cname, cvalue, exdays = 365) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+
+  function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
   }
 })();
