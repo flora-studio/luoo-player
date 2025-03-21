@@ -147,7 +147,7 @@
     const elem = document.createElement('div')
     elem.id = 'custom-progress-bar'
     elem.style.cssText = `
-      --bg: ${getCookie('progress-bar-color') ?? '#181818'};
+      --bg: ${getCookie('progress-bar-color') || '#181818'};
       position: absolute;
       left: 0;
       bottom: 0;
@@ -177,7 +177,7 @@
     const elem = document.createElement('input')
     elem.id = 'custom-color-picker'
     elem.type = 'color'
-    elem.value = getCookie('progress-bar-color') ?? '#181818'
+    elem.value = getCookie('progress-bar-color') || '#181818'
     elem.style.cssText = `
       position: absolute;
       left: 0;

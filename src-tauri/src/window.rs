@@ -28,7 +28,7 @@ pub fn go_mini(window: WebviewWindow) {
     IS_MINI = true;
 
     // 记住当前的尺寸
-    let old_size = window.outer_size().unwrap();
+    let old_size = window.inner_size().unwrap();
     CURRENT_SIZE = old_size;
     tauri::async_runtime::spawn(async move {
       toggle_window_size(window, true, old_size).await;
