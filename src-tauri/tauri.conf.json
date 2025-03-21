@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "luoo",
-  "version": "0.1.0",
+  "productName": "Luoo",
+  "version": "1.0.0",
   "identifier": "app.florastudio.luoo",
   "build": {
     "beforeBuildCommand": "",
@@ -13,7 +13,7 @@
     "withGlobalTauri": true,
     "windows": [
       {
-        "title": "luoo",
+        "title": "Luoo",
         "width": 1280,
         "height": 720,
         "resizable": true
@@ -25,7 +25,7 @@
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["nsis", "dmg"],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
