@@ -76,7 +76,7 @@
     if (e.buttons === 1 && e.detail !== 2) {
       const target = e.target
       // windows 下设置 startDragging 会导致本身的点击事件失效，因此要过滤掉原来有点击事件的区域
-      if ((target.tagName === 'DIV' || target.tagName === 'P') && !target.className.includes(' AudioPlayer_album_pic_overlay_expand')) {
+      if ((target.tagName === 'DIV' || target.tagName === 'P') && !target.className.includes(' AudioPlayer_album_pic_overlay_')) {
         const { getCurrentWindow } = window.__TAURI__.window
         const appWindow = getCurrentWindow()
         appWindow.startDragging()
@@ -102,13 +102,13 @@
   }
 
   function setToggler(domElem) {
-    const coverElem = domElem.querySelector('[class*=" AudioPlayer_album_pic_overlay_expand"]')
+    const coverElem = domElem.querySelector('[class*=" AudioPlayer_album_pic_overlay_"]')
     if (!coverElem) return
     coverElem.addEventListener('click', toggleMenuListener)
   }
 
   function cancelToggler(domElem) {
-    const coverElem = domElem.querySelector('[class*=" AudioPlayer_album_pic_overlay_expand"]')
+    const coverElem = domElem.querySelector('[class*=" AudioPlayer_album_pic_overlay_"]')
     if (!coverElem) return
     coverElem.removeEventListener('click', toggleMenuListener)
   }
