@@ -1,0 +1,21 @@
+{
+  "name": "落网画中画",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["activeTab", "storage"],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://*.indie.cn/*"
+      ],
+      "js": ["js/main.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup/index.html",
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "128": "icon.png"
+  }
+}
