@@ -8,7 +8,7 @@
   - 基于 Document Picture-in-Picture，支持 chrome/edge 116+
 - 独立 exe 版本：
   - desktop 分支
-  - 基于 Tauri
+  - 基于 Tauri，支持 win10 1803+
 
 下载：见 [releases](https://github.com/flora-studio/luoo-player/releases)
 
